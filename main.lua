@@ -1,4 +1,18 @@
 function love.load()
+
+    anim8 = require 'libraries/anim8/anim8'
+
+    sprites = {}
+    sprites.playerSheet = love.graphics.newImage("sprites/playerSheet.png")
+
+    --PARAMS: Dimensions of each cell on the grid (x, y), width and height of spritesheet.png
+    local grid = anim8.newGrid(614, 564, sprites.playerSheet:getWidth(), sprites.playerSheet:getHeight())
+
+    animations = {}
+    animations.idle = anim8.newAnimation(grid('1-15',1), 0.05)--1-15 = Cellule 1 à 15 de la spritesheet. ",1" = sur la ligne 1 de la Spritesheet, 
+    animations.jump = anim8.newAnimation(grid('1-7',2), 0.05)--1-15 = Cellule 1 à 15 de la spritesheet. ",1" = sur la ligne 1 de la Spritesheet, 
+    animations.run = anim8.newAnimation(grid('1-15',3), 0.05)--1-15 = Cellule 1 à 15 de la spritesheet. ",1" = sur la ligne 1 de la Spritesheet, 
+
     wf = require 'libraries/windfield/windfield'
 
     --WINDFIELD : 1st step, always create a World
@@ -15,6 +29,7 @@ function love.load()
     player = world:newRectangleCollider(360, 100, 80, 80, {collision_class = "Player"})
     player:setFixedRotation(true)--Collider cannot rotate when falling
     player.speed = 240
+    player.animation = animations.run
 
     platform = world:newRectangleCollider(250, 400, 300, 100, {collision_class = "Platform"})
     -- Type(Dynamic (by default), Static, Kinematic )
@@ -43,10 +58,14 @@ function love.update(dt)
         end
     end
 
+    player.animation:update(dt)--In order to permit to our Animation Object to updated during time
+
 end
 
 function love.draw()
     world:draw()
+
+    player.animation:draw(sprites.playerSheet, 0, 0)--In order to permit to our Animation Object to drawed during time
 end
 
 function love.keypressed(key)
