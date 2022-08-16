@@ -3,6 +3,7 @@ function love.load()
 
     --WINDFIELD : 1st step, always create a World
     world = wf.newWorld(0, 800, false)--Gravity on X and Y, Bodies allowed to sleep (cf love.physics.newWorld on wiki LOVE2D)
+    world:setQueryDebugDrawing(true)-- DEBUG DRAWING QUERY ZONES
 
     world:addCollisionClass('Platform')
     world:addCollisionClass('Player'--[[, {ignores = {'Platform'}} ]])
@@ -16,9 +17,10 @@ function love.load()
     player.speed = 240
 
     platform = world:newRectangleCollider(250, 400, 300, 100, {collision_class = "Platform"})
-    dangerZone = world:newRectangleCollider(0, 550, 800, 50, {collision_class = "Danger"})
     -- Type(Dynamic (by default), Static, Kinematic )
     platform:setType("static")
+
+    dangerZone = world:newRectangleCollider(0, 550, 800, 50, {collision_class = "Danger"})
     dangerZone:setType("static")
 end
 
@@ -49,6 +51,21 @@ end
 
 function love.keypressed(key)
     if key == "z" then
-       player:applyLinearImpulse(0, -7000)--Impulse on X, Y
+        --QUERY SEARCHING FOR A PLATFORM UNDER THE PLAYER FOR AUTHORIZATION TO JUMP ONLY FROM THE GROUND, AND NOT IN THE AIR
+        local colliders = world:queryRectangleArea(player:getX() - 40, player:getY() + 40, 80, 2, {'Platform'})
+        if #colliders > 0 then
+            player:applyLinearImpulse(0, -7000)--Impulse on X, Y
+        end
+        
+    end
+end
+
+function love.mousepressed(x, y, button)
+    if button == 1 then
+        local colliders = world:queryCircleArea(x, y, 200, {'Platform', 'Danger'})--X, Y, Radius, {Collection of collision_class to be queryed}
+
+        for i,c in ipairs(colliders) do
+            c:destroy()
+        end
     end
 end
