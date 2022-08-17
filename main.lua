@@ -30,6 +30,7 @@ function love.load()
     player:setFixedRotation(true)--Collider cannot rotate when falling
     player.speed = 240
     player.animation = animations.idle
+    player.isMoving = false
 
     platform = world:newRectangleCollider(250, 400, 300, 100, {collision_class = "Platform"})
     -- Type(Dynamic (by default), Static, Kinematic )
@@ -44,12 +45,15 @@ function love.update(dt)
     world:update(dt)
 
     if player.body then --IF IS SET PLAYER
+        player.isMoving = false
         local px, py = player:getPosition()--Will put X and Y positions  right in the local var px and py !
         if love.keyboard.isDown("d") then --MOVE RIGHT
             player:setX(px + player.speed * dt)
+            player.isMoving = true
         end
         if love.keyboard.isDown("q") then --MOVE LEFT
             player:setX(px - player.speed * dt)
+            player.isMoving = true
         end
 
         --IF PLAYER COLLIDE WITH A "DANGER" TAGGED COLLIDABLE THEN...
@@ -58,6 +62,11 @@ function love.update(dt)
         end
     end
 
+    if player.isMoving then 
+        player.animation = animations.run
+    else
+        player.animation = animations.idle
+    end
     player.animation:update(dt)--In order to permit to our Animation Object to updated during time
 
 end
