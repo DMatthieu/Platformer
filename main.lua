@@ -31,6 +31,7 @@ function love.load()
     player.speed = 240
     player.animation = animations.idle
     player.isMoving = false
+    player.direction = 1--"1" facing right. "-1" facing left
 
     platform = world:newRectangleCollider(250, 400, 300, 100, {collision_class = "Platform"})
     -- Type(Dynamic (by default), Static, Kinematic )
@@ -50,10 +51,12 @@ function love.update(dt)
         if love.keyboard.isDown("d") then --MOVE RIGHT
             player:setX(px + player.speed * dt)
             player.isMoving = true
+            player.direction = 1
         end
         if love.keyboard.isDown("q") then --MOVE LEFT
             player:setX(px - player.speed * dt)
             player.isMoving = true
+            player.direction = -1
         end
 
         --IF PLAYER COLLIDE WITH A "DANGER" TAGGED COLLIDABLE THEN...
@@ -76,7 +79,8 @@ function love.draw()
 
     local px, py = player:getPosition()
 
-    player.animation:draw(sprites.playerSheet, px, py, nil, 0.25, nil, 130, 300)--In order to permit to our Animation Object to drawed during time
+    --We multiply the x scale by player direction in order to flip or unflip the sprite orientation (moving left or right)
+    player.animation:draw(sprites.playerSheet, px, py, nil, 0.25 * player.direction, 0.25, 130, 300)--In order to permit to our Animation Object to drawed during time
 end
 
 function love.keypressed(key)
