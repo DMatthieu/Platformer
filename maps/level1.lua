@@ -8,8 +8,8 @@ return {
   height = 12,
   tilewidth = 64,
   tileheight = 64,
-  nextlayerid = 2,
-  nextobjectid = 1,
+  nextlayerid = 4,
+  nextobjectid = 11,
   properties = {},
   tilesets = {
     {
@@ -47,7 +47,7 @@ return {
       width = 40,
       height = 12,
       id = 1,
-      name = "Calque de Tuiles 1",
+      name = "Tile Layer 1",
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -67,6 +67,123 @@ return {
         0, 0, 0, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 5, 5, 6, 0, 0, 1, 3, 0, 0, 0, 1, 2, 3, 0, 4, 5, 5, 6, 0, 0, 0,
         0, 0, 0, 4, 5, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 4, 5, 5, 5, 5, 6, 0, 0, 4, 6, 0, 0, 0, 4, 5, 6, 0, 4, 5, 5, 6, 0, 0, 0,
         0, 0, 0, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 0, 0, 0, 4, 5, 5, 5, 5, 6, 0, 0, 4, 6, 0, 0, 0, 4, 5, 6, 0, 4, 5, 5, 6, 0, 0, 0
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 3,
+      name = "Platforms",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      properties = {},
+      objects = {
+        {
+          id = 3,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 192,
+          y = 640,
+          width = 640,
+          height = 128,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 4,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 192,
+          y = 320,
+          width = 128,
+          height = 448,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 5,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 190,
+          y = 318,
+          width = 642,
+          height = 44,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 6,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1022,
+          y = 512,
+          width = 382,
+          height = 258,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 7,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1538,
+          y = 578,
+          width = 124,
+          height = 190,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 8,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1860,
+          y = 578,
+          width = 186,
+          height = 188,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 9,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2110,
+          y = 512,
+          width = 254,
+          height = 258,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 10,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2434,
+          y = 382,
+          width = 132,
+          height = 48,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
       }
     }
   }
