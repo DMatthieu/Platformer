@@ -32,6 +32,7 @@ function love.load()
     player.animation = animations.idle
     player.isMoving = false
     player.direction = 1--"1" facing right. "-1" facing left
+    player.grounded = true
 
     platform = world:newRectangleCollider(250, 400, 300, 100, {collision_class = "Platform"})
     -- Type(Dynamic (by default), Static, Kinematic )
@@ -46,6 +47,13 @@ function love.update(dt)
     world:update(dt)
 
     if player.body then --IF IS SET PLAYER
+        local colliders = world:queryRectangleArea(player:getX() - 20, player:getY() + 50, 40, 2, {'Platform'})
+        if #colliders > 0 then
+            player.grounded = true
+        else 
+            player.grounded = false
+        end
+
         player.isMoving = false
         local px, py = player:getPosition()--Will put X and Y positions  right in the local var px and py !
         if love.keyboard.isDown("d") then --MOVE RIGHT
@@ -65,10 +73,14 @@ function love.update(dt)
         end
     end
 
-    if player.isMoving then 
-        player.animation = animations.run
+    if player.grounded then
+        if player.isMoving then 
+            player.animation = animations.run
+        else
+            player.animation = animations.idle
+        end
     else
-        player.animation = animations.idle
+        player.animation = animations.jump    
     end
     player.animation:update(dt)--In order to permit to our Animation Object to updated during time
 
@@ -87,7 +99,7 @@ function love.keypressed(key)
     if key == "z" then
         --QUERY SEARCHING FOR A PLATFORM UNDER THE PLAYER FOR AUTHORIZATION TO JUMP ONLY FROM THE GROUND, AND NOT IN THE AIR
         local colliders = world:queryRectangleArea(player:getX() - 20, player:getY() + 50, 40, 2, {'Platform'})
-        if #colliders > 0 then
+        if player.grounded then
             player:applyLinearImpulse(0, -4000)--Impulse on X, Y
         end
         
