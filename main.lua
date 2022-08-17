@@ -4,6 +4,9 @@ function love.load()
 
     anim8 = require 'libraries/anim8/anim8'
     sti = require('libraries.Simple-Tiled-Implementation/sti')
+    cameraFile = require('libraries/hump/camera')
+
+    cam = cameraFile()
 
     sprites = {}
     sprites.playerSheet = love.graphics.newImage("sprites/playerSheet.png")
@@ -43,12 +46,22 @@ function love.update(dt)
     world:update(dt)
     playerUpdate(dt)
     gameMap:update(dt)
+
+    --MODE THAT MAKE CAMERA FOLLOW THE PLAYER ON X and Y VALUES
+    -- local px, py = player:getPosition()
+    -- cam:lookAt(px, py)
+    
+    --MODE THAT FOLLOW THE PLAYER BUT STAY FIXED ON MIDDLE OF THE SCREEN ON Y AXIS
+    local px = player:getX()
+    cam:lookAt(px, love.graphics.getHeight() / 2)
 end
 
 function love.draw()
-    --TILED: Layer of tiled drawed to the screen
-    gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
-    drawPlayer()
+    cam:attach()--Put things affected by the camera
+        --TILED: Layer of tiled drawed to the screen
+        gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
+        drawPlayer()
+    cam:detach()--Everything after detach will not be affected by camera system.
     
     -- world:draw()
 end
