@@ -26,10 +26,10 @@ function love.load()
     -- WINDFIELD : Create a Collider player. Combine Body, Fixture and Shape
     -- Reminder: Physics object = Collider.
     -- Params: X, Y, W, H, Type
-    player = world:newRectangleCollider(360, 100, 80, 80, {collision_class = "Player"})
+    player = world:newRectangleCollider(360, 100, 40, 100, {collision_class = "Player"})
     player:setFixedRotation(true)--Collider cannot rotate when falling
     player.speed = 240
-    player.animation = animations.run
+    player.animation = animations.idle
 
     platform = world:newRectangleCollider(250, 400, 300, 100, {collision_class = "Platform"})
     -- Type(Dynamic (by default), Static, Kinematic )
@@ -65,15 +65,17 @@ end
 function love.draw()
     world:draw()
 
-    player.animation:draw(sprites.playerSheet, 0, 0)--In order to permit to our Animation Object to drawed during time
+    local px, py = player:getPosition()
+
+    player.animation:draw(sprites.playerSheet, px, py, nil, 0.25, nil, 130, 300)--In order to permit to our Animation Object to drawed during time
 end
 
 function love.keypressed(key)
     if key == "z" then
         --QUERY SEARCHING FOR A PLATFORM UNDER THE PLAYER FOR AUTHORIZATION TO JUMP ONLY FROM THE GROUND, AND NOT IN THE AIR
-        local colliders = world:queryRectangleArea(player:getX() - 40, player:getY() + 40, 80, 2, {'Platform'})
+        local colliders = world:queryRectangleArea(player:getX() - 20, player:getY() + 50, 40, 2, {'Platform'})
         if #colliders > 0 then
-            player:applyLinearImpulse(0, -7000)--Impulse on X, Y
+            player:applyLinearImpulse(0, -4000)--Impulse on X, Y
         end
         
     end
