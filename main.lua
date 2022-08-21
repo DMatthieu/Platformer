@@ -23,13 +23,14 @@ function love.load()
 
     --WINDFIELD : 1st step, always create a World
     world = wf.newWorld(0, 800, false)--Gravity on X and Y, Bodies allowed to sleep (cf love.physics.newWorld on wiki LOVE2D)
-    world:setQueryDebugDrawing(true)-- DEBUG DRAWING QUERY ZONES
+    world:setQueryDebugDrawing(true)-- DEBUG: DRAWING QUERY ZONES
 
     world:addCollisionClass('Platform')
     world:addCollisionClass('Player'--[[, {ignores = {'Platform'}} ]])
     world:addCollisionClass('Danger')
 
     require('player')
+    require('enemy')
 
     
 
@@ -39,13 +40,17 @@ function love.load()
     platforms = {}
 
     loadMap()
+
+    spawnEnemy(1260, 100)
 end
 
 function love.update(dt)
     --WINDFIELD: World Update
     world:update(dt)
-    playerUpdate(dt)
     gameMap:update(dt)
+    playerUpdate(dt)
+    updateEnemies(dt)
+    
 
     --MODE THAT MAKE CAMERA FOLLOW THE PLAYER ON X and Y VALUES
     -- local px, py = player:getPosition()
@@ -61,9 +66,10 @@ function love.draw()
         --TILED: Layer of tiled drawed to the screen
         gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
         drawPlayer()
+        world:draw()--DRAW HITBOXES. DRAW ALSO QUERY ZONES IF "setQueryDebugDrawing(true)" In fct love.load()
     cam:detach()--Everything after detach will not be affected by camera system.
     
-    -- world:draw()
+    
 end
 
 function love.keypressed(key)
